@@ -1,0 +1,1219 @@
+{
+    "sources": [
+        {
+            "author": [
+                {
+                    "family": "Altman",
+                    "given": "Douglas G"
+                },
+                {
+                    "family": "Moher",
+                    "given": "David"
+                },
+                {
+                    "family": "Schulz",
+                    "given": "Kenneth F"
+                }
+            ],
+            "container-title": "Statistics in Medicine",
+            "id": "consort",
+            "issue": "25",
+            "issued": {
+                "date-parts": [
+                    [
+                        2012,
+                        11
+                    ]
+                ]
+            },
+            "page": "2985-2997",
+            "title": "Improving the reporting of randomised trials: the CONSORT Statement and beyond.",
+            "type": "article-journal",
+            "volume": "31"
+        },
+        {
+            "author": [
+                {
+                    "family": "Colditz",
+                    "given": "Graham A"
+                },
+                {
+                    "family": "Sellers",
+                    "given": "Thomas A"
+                },
+                {
+                    "family": "Trapido",
+                    "given": "Edward"
+                }
+            ],
+            "container-title": "Nature Reviews Cancer",
+            "id": "colditz",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2006,
+                        1
+                    ]
+                ]
+            },
+            "page": "75-83",
+            "title": "Epidemiology - identifying the causes and preventability of cancer?",
+            "type": "article-journal",
+            "volume": "6"
+        },
+        {
+            "author": [
+                {
+                    "family": "Crawley",
+                    "given": "Michael J"
+                }
+            ],
+            "edition": "Second",
+            "id": "crawley",
+            "issued": {
+                "date-parts": [
+                    [
+                        2013
+                    ]
+                ]
+            },
+            "publisher": "Wiley",
+            "title": "The R Book",
+            "type": "book"
+        },
+        {
+            "author": [
+                {
+                    "family": "Dalgaard",
+                    "given": "Peter"
+                }
+            ],
+            "edition": "Second",
+            "id": "iswr",
+            "issued": {
+                "date-parts": [
+                    [
+                        2008
+                    ]
+                ]
+            },
+            "publisher": "Springer",
+            "title": "Introductory statistics with r",
+            "type": "book"
+        },
+        {
+            "author": [
+                {
+                    "family": "Fleiss",
+                    "given": "J L"
+                }
+            ],
+            "id": "fleiss",
+            "issued": {
+                "date-parts": [
+                    [
+                        1981
+                    ]
+                ]
+            },
+            "publisher": "Wiley",
+            "title": "Statistical Methods for Rates and Proportions",
+            "type": "book"
+        },
+        {
+            "author": [
+                {
+                    "family": "Hothorn",
+                    "given": "T."
+                },
+                {
+                    "family": "Bretz",
+                    "given": "F."
+                },
+                {
+                    "family": "Westfall",
+                    "given": "P."
+                }
+            ],
+            "container-title": "Biometrical Journal. Biometrische Zeitschrift",
+            "id": "westfall",
+            "issue": "3",
+            "issued": {
+                "date-parts": [
+                    [
+                        2008,
+                        6
+                    ]
+                ]
+            },
+            "page": "346-363",
+            "title": "Simultaneous inference in general parametric models.",
+            "type": "article-journal",
+            "volume": "50"
+        },
+        {
+            "author": [
+                {
+                    "family": "Kirkwood",
+                    "given": "Betty R."
+                },
+                {
+                    "family": "Sterne",
+                    "given": "Jonathan AC"
+                }
+            ],
+            "edition": "Second Edition",
+            "id": "kirkwood",
+            "issued": {
+                "date-parts": [
+                    [
+                        2003
+                    ]
+                ]
+            },
+            "publisher": "Blackwell",
+            "title": "Essential Medical Statistics",
+            "type": "book"
+        },
+        {
+            "DOI": "10.1073/pnas.1707505115",
+            "ISSN": "0027-8424",
+            "URL": "http://www.pnas.org/content/115/1/30",
+            "author": [
+                {
+                    "family": "Li",
+                    "given": "Xuelong"
+                },
+                {
+                    "family": "Jusup",
+                    "given": "Marko"
+                },
+                {
+                    "family": "Wang",
+                    "given": "Zhen"
+                },
+                {
+                    "family": "Li",
+                    "given": "Huijia"
+                },
+                {
+                    "family": "Shi",
+                    "given": "Lei"
+                },
+                {
+                    "family": "Podobnik",
+                    "given": "Boris"
+                },
+                {
+                    "family": "Stanley",
+                    "given": "H. Eugene"
+                },
+                {
+                    "family": "Havlin",
+                    "given": "Shlomo"
+                },
+                {
+                    "family": "Boccaletti",
+                    "given": "Stefano"
+                }
+            ],
+            "container-title": "PNAS (USA)",
+            "id": "stanley",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2018
+                    ]
+                ]
+            },
+            "page": "30-35",
+            "title": "Punishment diminishes the benefits of network reciprocity in social dilemma experiments",
+            "type": "article-journal",
+            "volume": "115"
+        },
+        {
+            "DOI": "10.1038/506150a",
+            "PMID": "24522584",
+            "author": [
+                {
+                    "family": "Nuzzo",
+                    "given": "Regina"
+                }
+            ],
+            "container-title": "Nature",
+            "id": "nuzzo",
+            "issue": "7487",
+            "issued": {
+                "date-parts": [
+                    [
+                        2014,
+                        2
+                    ]
+                ]
+            },
+            "page": "150-2",
+            "title": "Scientific method: Statistical errors",
+            "title-short": "Scientific method",
+            "type": "article-journal",
+            "volume": "506"
+        },
+        {
+            "URL": "https://www.R-project.org/",
+            "author": [
+                {
+                    "literal": "R Core Team"
+                }
+            ],
+            "id": "cran",
+            "issued": {
+                "date-parts": [
+                    [
+                        2020
+                    ]
+                ]
+            },
+            "publisher": "R Foundation for Statistical Computing",
+            "publisher-place": "Vienna, Austria",
+            "title": "R: A language and environment for statistical computing",
+            "title-short": "R",
+            "type": "book"
+        },
+        {
+            "DOI": "10.3945/ajcn.112.047142",
+            "URL": " + http://dx.doi.org/10.3945/ajcn.112.047142",
+            "author": [
+                {
+                    "family": "Schoenfeld",
+                    "given": "Jonathan D"
+                },
+                {
+                    "family": "Ioannidis",
+                    "given": "John PA"
+                }
+            ],
+            "container-title": "Am J Clin Nutr",
+            "id": "nutrition",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2013
+                    ]
+                ]
+            },
+            "page": "127-134",
+            "title": "Is everything we eat associated with cancer? A systematic cookbook review",
+            "type": "article-journal",
+            "volume": "97"
+        },
+        {
+            "author": [
+                {
+                    "family": "Smith",
+                    "given": "Robert J"
+                },
+                {
+                    "family": "Okano",
+                    "given": "Justin T"
+                },
+                {
+                    "family": "Kahn",
+                    "given": "James S"
+                },
+                {
+                    "family": "Bodine",
+                    "given": "Erin N"
+                },
+                {
+                    "family": "Blower",
+                    "given": "Sally"
+                }
+            ],
+            "container-title": "Science (New York, NY)",
+            "id": "blower",
+            "issue": "5966",
+            "issued": {
+                "date-parts": [
+                    [
+                        2010,
+                        2
+                    ]
+                ]
+            },
+            "page": "697-701",
+            "title": "Evolutionary Dynamics of Complex Networks of HIV Drug-Resistant Strains: The Case of San Francisco",
+            "type": "article-journal",
+            "volume": "327"
+        },
+        {
+            "PMID": "13680575",
+            "author": [
+                {
+                    "family": "Tuzson",
+                    "given": "Ann E"
+                },
+                {
+                    "family": "Granata",
+                    "given": "Kevin P"
+                },
+                {
+                    "family": "Abel",
+                    "given": "Mark F"
+                }
+            ],
+            "container-title": "Arch Phys Med Rehabil",
+            "id": "tuzson",
+            "issue": "9",
+            "issued": {
+                "date-parts": [
+                    [
+                        2003,
+                        9
+                    ]
+                ]
+            },
+            "page": "1363-8",
+            "title": "Spastic velocity threshold constrains functional performance in cerebral palsy",
+            "type": "article-journal",
+            "volume": "84"
+        },
+        {
+            "URL": "https://github.com/rstudio/bookdown",
+            "author": [
+                {
+                    "family": "Xie",
+                    "given": "Yihui"
+                }
+            ],
+            "id": "R-bookdown",
+            "issued": {
+                "date-parts": [
+                    [
+                        2016
+                    ]
+                ]
+            },
+            "note": "R package version 0.1.4",
+            "title": "Bookdown: Authoring books with r markdown",
+            "title-short": "Bookdown",
+            "type": "book"
+        },
+        {
+            "URL": "https://CRAN.R-project.org/package=knitr",
+            "author": [
+                {
+                    "family": "Xie",
+                    "given": "Yihui"
+                }
+            ],
+            "id": "R-knitr",
+            "issued": {
+                "date-parts": [
+                    [
+                        2016
+                    ]
+                ]
+            },
+            "note": "R package version 1.14",
+            "title": "Knitr: A general-purpose package for dynamic report generation in r",
+            "title-short": "Knitr",
+            "type": "book"
+        },
+        {
+            "author": [
+                {
+                    "family": "Leek",
+                    "given": "Jeff"
+                },
+                {
+                    "family": "McShane",
+                    "given": "BB"
+                },
+                {
+                    "family": "Gelman",
+                    "given": "A"
+                },
+                {
+                    "family": "Colquhoun",
+                    "given": "D"
+                },
+                {
+                    "family": "Nuijten",
+                    "given": "MB"
+                },
+                {
+                    "family": "Goodman",
+                    "given": "SN"
+                }
+            ],
+            "container-title": "Nature",
+            "id": "leek",
+            "issued": {
+                "date-parts": [
+                    [
+                        2017
+                    ]
+                ]
+            },
+            "page": "557-8",
+            "title": "Five ways to fix statistics",
+            "type": "article-journal",
+            "volume": "551"
+        },
+        {
+            "DOI": "10.1038/nature.2017.22625",
+            "ISSN": "1476-4687",
+            "URL": "http://www.nature.com/doifinder/10.1038/nature.2017.22625",
+            "author": [
+                {
+                    "family": "Singh Chawla",
+                    "given": "Dalmeet"
+                }
+            ],
+            "container-title": "Nature",
+            "id": "singh",
+            "issued": {
+                "date-parts": [
+                    [
+                        2017,
+                        9
+                    ]
+                ]
+            },
+            "title": "’One-size-fits-all’ threshold for P values under fire",
+            "type": "article-journal"
+        },
+        {
+            "DOI": "10.1126/scitranslmed.aan2415",
+            "ISSN": "1946-6234",
+            "URL": "http://stm.sciencemag.org/content/9/403/eaan2415",
+            "author": [
+                {
+                    "family": "Phallen",
+                    "given": "Jillian"
+                },
+                {
+                    "family": "Sausen",
+                    "given": "Mark"
+                },
+                {
+                    "family": "Adleff",
+                    "given": "Vilmos"
+                },
+                {
+                    "family": "Leal",
+                    "given": "Alessandro"
+                },
+                {
+                    "family": "Hruban",
+                    "given": "Carolyn"
+                },
+                {
+                    "family": "White",
+                    "given": "James"
+                },
+                {
+                    "family": "Anagnostou",
+                    "given": "Valsamo"
+                },
+                {
+                    "family": "Fiksel",
+                    "given": "Jacob"
+                },
+                {
+                    "family": "Cristiano",
+                    "given": "Stephen"
+                },
+                {
+                    "family": "Papp",
+                    "given": "Eniko"
+                },
+                {
+                    "family": "Speir",
+                    "given": "Savannah"
+                },
+                {
+                    "family": "Reinert",
+                    "given": "Thomas"
+                },
+                {
+                    "family": "Orntoft",
+                    "given": "Mai-Britt Worm"
+                },
+                {
+                    "family": "Woodward",
+                    "given": "Brian D."
+                },
+                {
+                    "family": "Murphy",
+                    "given": "Derek"
+                },
+                {
+                    "family": "Parpart-Li",
+                    "given": "Sonya"
+                },
+                {
+                    "family": "Riley",
+                    "given": "David"
+                },
+                {
+                    "family": "Nesselbush",
+                    "given": "Monica"
+                },
+                {
+                    "family": "Sengamalay",
+                    "given": "Naomi"
+                },
+                {
+                    "family": "Georgiadis",
+                    "given": "Andrew"
+                },
+                {
+                    "family": "Li",
+                    "given": "Qing Kay"
+                },
+                {
+                    "family": "Madsen",
+                    "given": "Mogens Rørbæk"
+                },
+                {
+                    "family": "Mortensen",
+                    "given": "Frank Viborg"
+                },
+                {
+                    "family": "Huiskens",
+                    "given": "Joost"
+                },
+                {
+                    "family": "Punt",
+                    "given": "Cornelis"
+                },
+                {
+                    "dropping-particle": "van",
+                    "family": "Grieken",
+                    "given": "Nicole"
+                },
+                {
+                    "family": "Fijneman",
+                    "given": "Remond"
+                },
+                {
+                    "family": "Meijer",
+                    "given": "Gerrit"
+                },
+                {
+                    "family": "Husain",
+                    "given": "Hatim"
+                },
+                {
+                    "family": "Scharpf",
+                    "given": "Robert B."
+                },
+                {
+                    "family": "Diaz",
+                    "given": "Luis A."
+                },
+                {
+                    "family": "Jones",
+                    "given": "Siân"
+                },
+                {
+                    "family": "Angiuoli",
+                    "given": "Sam"
+                },
+                {
+                    "family": "Ørntoft",
+                    "given": "Torben"
+                },
+                {
+                    "family": "Nielsen",
+                    "given": "Hans Jørgen"
+                },
+                {
+                    "family": "Andersen",
+                    "given": "Claus Lindbjerg"
+                },
+                {
+                    "family": "Velculescu",
+                    "given": "Victor E."
+                }
+            ],
+            "container-title": "Science Translational Medicine",
+            "id": "phallen",
+            "issue": "403",
+            "issued": {
+                "date-parts": [
+                    [
+                        2017
+                    ]
+                ]
+            },
+            "title": "Direct detection of early-stage cancers using circulating tumor DNA",
+            "type": "article-journal",
+            "volume": "9"
+        },
+        {
+            "DOI": "10.1038/s41539-018-0029-6",
+            "ISSN": "2056-7936",
+            "URL": "http://www.nature.com/articles/s41539-018-0029-6",
+            "container-title": "npj Science of Learning",
+            "id": "kral",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2018,
+                        12
+                    ]
+                ]
+            },
+            "keyword": "Empathy,Human behaviour,Prefrontal cortex",
+            "page": "13",
+            "publisher": "Nature Publishing Group",
+            "title": "Neural correlates of video game empathy training in adolescents: a randomized trial",
+            "type": "article-journal",
+            "volume": "3"
+        },
+        {
+            "DOI": "10.1038/s41467-018-07019-x",
+            "ISSN": "2041-1723",
+            "URL": "http://www.nature.com/articles/s41467-018-07019-x",
+            "author": [
+                {
+                    "family": "Hansen",
+                    "given": "Lea B. S."
+                },
+                {
+                    "family": "Roager",
+                    "given": "Henrik M."
+                },
+                {
+                    "family": "Søndertoft",
+                    "given": "Nadja B."
+                },
+                {
+                    "family": "Gøbel",
+                    "given": "Rikke J."
+                },
+                {
+                    "family": "Kristensen",
+                    "given": "Mette"
+                },
+                {
+                    "family": "Vallès-Colomer",
+                    "given": "Mireia"
+                },
+                {
+                    "family": "Vieira-Silva",
+                    "given": "Sara"
+                },
+                {
+                    "family": "Ibrügger",
+                    "given": "Sabine"
+                },
+                {
+                    "family": "Lind",
+                    "given": "Mads V."
+                },
+                {
+                    "family": "Mærkedahl",
+                    "given": "Rasmus B."
+                },
+                {
+                    "family": "Bahl",
+                    "given": "Martin I."
+                },
+                {
+                    "family": "Madsen",
+                    "given": "Mia L."
+                },
+                {
+                    "family": "Havelund",
+                    "given": "Jesper"
+                },
+                {
+                    "family": "Falony",
+                    "given": "Gwen"
+                },
+                {
+                    "family": "Tetens",
+                    "given": "Inge"
+                },
+                {
+                    "family": "Nielsen",
+                    "given": "Trine"
+                },
+                {
+                    "family": "Allin",
+                    "given": "Kristine H."
+                },
+                {
+                    "family": "Frandsen",
+                    "given": "Henrik L."
+                },
+                {
+                    "family": "Hartmann",
+                    "given": "Bolette"
+                },
+                {
+                    "family": "Holst",
+                    "given": "Jens Juul"
+                },
+                {
+                    "family": "Sparholt",
+                    "given": "Morten H."
+                },
+                {
+                    "family": "Holck",
+                    "given": "Jesper"
+                },
+                {
+                    "family": "Blennow",
+                    "given": "Andreas"
+                },
+                {
+                    "family": "Moll",
+                    "given": "Janne Marie"
+                },
+                {
+                    "family": "Meyer",
+                    "given": "Anne S."
+                },
+                {
+                    "family": "Hoppe",
+                    "given": "Camilla"
+                },
+                {
+                    "family": "Poulsen",
+                    "given": "Jørgen H."
+                },
+                {
+                    "family": "Carvalho",
+                    "given": "Vera"
+                },
+                {
+                    "family": "Sagnelli",
+                    "given": "Domenico"
+                },
+                {
+                    "family": "Dalgaard",
+                    "given": "Marlene D."
+                },
+                {
+                    "family": "Christensen",
+                    "given": "Anders F."
+                },
+                {
+                    "family": "Lydolph",
+                    "given": "Magnus Christian"
+                },
+                {
+                    "family": "Ross",
+                    "given": "Alastair B."
+                },
+                {
+                    "family": "Villas-Bôas",
+                    "given": "Silas"
+                },
+                {
+                    "family": "Brix",
+                    "given": "Susanne"
+                },
+                {
+                    "family": "Sicheritz-Pontén",
+                    "given": "Thomas"
+                },
+                {
+                    "family": "Buschard",
+                    "given": "Karsten"
+                },
+                {
+                    "family": "Linneberg",
+                    "given": "Allan"
+                },
+                {
+                    "family": "Rumessen",
+                    "given": "Jüri J."
+                },
+                {
+                    "family": "Ekstrøm",
+                    "given": "Claus T."
+                },
+                {
+                    "family": "Ritz",
+                    "given": "Christian"
+                },
+                {
+                    "family": "Kristiansen",
+                    "given": "Karsten"
+                },
+                {
+                    "family": "Nielsen",
+                    "given": "H. Bjørn"
+                },
+                {
+                    "family": "Vestergaard",
+                    "given": "Henrik"
+                },
+                {
+                    "family": "Færgeman",
+                    "given": "Nils J."
+                },
+                {
+                    "family": "Raes",
+                    "given": "Jeroen"
+                },
+                {
+                    "family": "Frøkiær",
+                    "given": "Hanne"
+                },
+                {
+                    "family": "Hansen",
+                    "given": "Torben"
+                },
+                {
+                    "family": "Lauritzen",
+                    "given": "Lotte"
+                },
+                {
+                    "family": "Gupta",
+                    "given": "Ramneek"
+                },
+                {
+                    "family": "Licht",
+                    "given": "Tine Rask"
+                },
+                {
+                    "family": "Pedersen",
+                    "given": "Oluf"
+                }
+            ],
+            "container-title": "Nature Communications",
+            "id": "hansen",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2018,
+                        12
+                    ]
+                ]
+            },
+            "keyword": "Gastroenterology,Metabolism,Microbiome",
+            "page": "4630",
+            "publisher": "Nature Publishing Group",
+            "title": "A low-gluten diet induces changes in the intestinal microbiome of healthy Danish adults",
+            "type": "article-journal",
+            "volume": "9"
+        },
+        {
+            "DOI": "10.1016/J.PSYNEUEN.2018.11.032",
+            "ISSN": "0306-4530",
+            "URL": "https://www.sciencedirect.com/science/article/pii/S0306453018301963?via{\\%}3Dihub",
+            "author": [
+                {
+                    "family": "Russell",
+                    "given": "Alice"
+                },
+                {
+                    "family": "Hepgul",
+                    "given": "Nilay"
+                },
+                {
+                    "family": "Nikkheslat",
+                    "given": "Naghmeh"
+                },
+                {
+                    "family": "Borsini",
+                    "given": "Alessandra"
+                },
+                {
+                    "family": "Zajkowska",
+                    "given": "Zuzanna"
+                },
+                {
+                    "family": "Moll",
+                    "given": "Natalie"
+                },
+                {
+                    "family": "Forton",
+                    "given": "Daniel"
+                },
+                {
+                    "family": "Agarwal",
+                    "given": "Kosh"
+                },
+                {
+                    "family": "Chalder",
+                    "given": "Trudie"
+                },
+                {
+                    "family": "Mondelli",
+                    "given": "Valeria"
+                },
+                {
+                    "family": "Hotopf",
+                    "given": "Matthew"
+                },
+                {
+                    "family": "Cleare",
+                    "given": "Anthony"
+                },
+                {
+                    "family": "Murphy",
+                    "given": "Gabrielle"
+                },
+                {
+                    "family": "Foster",
+                    "given": "Graham"
+                },
+                {
+                    "family": "Wong",
+                    "given": "Terry"
+                },
+                {
+                    "family": "Schütze",
+                    "given": "Gregor A."
+                },
+                {
+                    "family": "Schwarz",
+                    "given": "Markus J."
+                },
+                {
+                    "family": "Harrison",
+                    "given": "Neil"
+                },
+                {
+                    "family": "Zunszain",
+                    "given": "Patricia A."
+                },
+                {
+                    "family": "Pariante",
+                    "given": "Carmine M."
+                }
+            ],
+            "container-title": "Psychoneuroendocrinology",
+            "id": "russell",
+            "issued": {
+                "date-parts": [
+                    [
+                        2019,
+                        2
+                    ]
+                ]
+            },
+            "page": "276-285",
+            "publisher": "Pergamon",
+            "title": "Persistent fatigue induced by interferon-alpha: a novel, inflammation-based, proxy model of chronic fatigue syndrome",
+            "type": "article-journal",
+            "volume": "100"
+        },
+        {
+            "DOI": "10.1371/journal.pmed.1002292",
+            "ISSN": "1549-1676",
+            "URL": "https://dx.plos.org/10.1371/journal.pmed.1002292",
+            "author": [
+                {
+                    "family": "Hayes",
+                    "given": "Richard"
+                },
+                {
+                    "family": "Floyd",
+                    "given": "Sian"
+                },
+                {
+                    "family": "Schaap",
+                    "given": "Ab"
+                },
+                {
+                    "family": "Shanaube",
+                    "given": "Kwame"
+                },
+                {
+                    "family": "Bock",
+                    "given": "Peter"
+                },
+                {
+                    "family": "Sabapathy",
+                    "given": "Kalpana"
+                },
+                {
+                    "family": "Griffith",
+                    "given": "Sam"
+                },
+                {
+                    "family": "Donnell",
+                    "given": "Deborah"
+                },
+                {
+                    "family": "Piwowar-Manning",
+                    "given": "Estelle"
+                },
+                {
+                    "family": "El-Sadr",
+                    "given": "Wafaa"
+                },
+                {
+                    "family": "Beyers",
+                    "given": "Nulda"
+                },
+                {
+                    "family": "Ayles",
+                    "given": "Helen"
+                },
+                {
+                    "family": "Fidler",
+                    "given": "Sarah"
+                },
+                {
+                    "family": "Team",
+                    "given": "for the HPTN 071 (PopART) Study"
+                }
+            ],
+            "container-title": "PLOS Medicine",
+            "editor": [
+                {
+                    "family": "Low",
+                    "given": "Nicola"
+                }
+            ],
+            "id": "hayes",
+            "issue": "5",
+            "issued": {
+                "date-parts": [
+                    [
+                        2017,
+                        5
+                    ]
+                ]
+            },
+            "page": "e1002292",
+            "publisher": "Public Library of Science",
+            "title": "A universal testing and treatment intervention to improve HIV control: One-year results from intervention communities in Zambia in the HPTN 071 (PopART) cluster-randomised trial",
+            "type": "article-journal",
+            "volume": "14"
+        },
+        {
+            "DOI": "10.1080/00031305.2019.1583913",
+            "ISSN": "0003-1305",
+            "URL": "https://www.tandfonline.com/doi/full/10.1080/00031305.2019.1583913",
+            "author": [
+                {
+                    "family": "Wasserstein",
+                    "given": "Ronald L."
+                },
+                {
+                    "family": "Schirm",
+                    "given": "Allen L."
+                },
+                {
+                    "family": "Lazar",
+                    "given": "Nicole A."
+                }
+            ],
+            "container-title": "The American Statistician",
+            "id": "wasserstein",
+            "issue": "sup1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2019,
+                        3
+                    ]
+                ]
+            },
+            "page": "1-19",
+            "title": "Moving to a World Beyond p < 0.05",
+            "type": "article-journal",
+            "volume": "73"
+        },
+        {
+            "DOI": "10.1038/d41586-019-00857-9",
+            "ISSN": "0028-0836",
+            "URL": "http://www.nature.com/articles/d41586-019-00857-9",
+            "abstract": "Valentin Amrhein, Sander Greenland, Blake McShane and more than 800 signatories call for an end to hyped claims and the dismissal of possibly crucial effects.",
+            "author": [
+                {
+                    "family": "Amrhein",
+                    "given": "Valentin"
+                },
+                {
+                    "family": "Greenland",
+                    "given": "Sander"
+                },
+                {
+                    "family": "McShane",
+                    "given": "Blake"
+                }
+            ],
+            "container-title": "Nature",
+            "id": "amrhein",
+            "issue": "7748",
+            "issued": {
+                "date-parts": [
+                    [
+                        2019,
+                        3
+                    ]
+                ]
+            },
+            "keyword": "Research data,Research management",
+            "page": "305-307",
+            "publisher": "Nature Publishing Group",
+            "title": "Scientists rise up against statistical significance",
+            "type": "article-journal",
+            "volume": "567"
+        },
+        {
+            "DOI": "10.1177/2515245918771329",
+            "ISSN": "2515-2459",
+            "URL": "http://journals.sagepub.com/doi/10.1177/2515245918771329",
+            "author": [
+                {
+                    "family": "Gigerenzer",
+                    "given": "Gerd"
+                }
+            ],
+            "container-title": "Advances in Methods and Practices in Psychological Science",
+            "id": "gigerenzer",
+            "issue": "2",
+            "issued": {
+                "date-parts": [
+                    [
+                        2018,
+                        6
+                    ]
+                ]
+            },
+            "page": "198-218",
+            "title": "Statistical Rituals: The Replication Delusion and How We Got There",
+            "type": "article-journal",
+            "volume": "1"
+        },
+        {
+            "URL": "https://github.com/josie-athens/pubh",
+            "author": [
+                {
+                    "family": "Athens",
+                    "given": "Josie"
+                }
+            ],
+            "id": "pubh",
+            "issued": {
+                "date-parts": [
+                    [
+                        2020
+                    ]
+                ]
+            },
+            "note": "R package version 1.1.10",
+            "title": "pubh: A Toolbox for Public Health and Epidemiology",
+            "type": "book"
+        }
+    ],
+    "project_biblios": [
+        "packages.bib"
+    ]
+}

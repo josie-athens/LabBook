@@ -1,0 +1,96 @@
+# Preface {.unnumbered}
+
+## R Syntax
+
+Entering your statistical analyses and data manipulations using syntax might initially be daunting. However, there are some major advantages of this approach over *pointing and clicking*. Creating a syntax file to perform your analyses will enable you to:
+
+- Automatically document exactly how you performed an analysis, including exactly which data set was used.
+- Easily reproduce an analysis.
+- Easily repeat an analysis with minor changes or on a modified data set.
+- Run a time-consuming series of analyses while you are away from your computer.
+- Use copy and paste to create templates and/or macros to assist with performing repetitive analyses.
+- Use your code to unambiguously explain your analysis to someone (such as a statistician).
+- Perform your analyses more quickly as typing (once you know what to type) is usually faster than using menus or combo boxes.
+- Backup your analysis using a small text file.
+
+Initially, we will use syntax in an interactive fashion. In other words, we will enter a command directly into `R`, examine the results, and then enter the next command. Later, we will look at storing these commands in a single file that can be run in one action (a script `.R` file).
+
+It is worth noting at the outset that `R` is case-sensitive. This means that `Anova` and `anova` are different commands. Variable names can use both lower and upper case, but `AGE`, `age`, and `Age` are three different variables. To minimise the possibility of confusion, using only lower case for variable names is recommended, although some people capitalise subsequent words (e.g., `ChildAge`).
+
+## Additional sources of information
+
+The on-line help that comes with `R` contains a lot of useful information, especially for syntax. If you cannot recall the particular syntax needed, you can use the dialogue boxes and examine the syntax that `R` includes in the `Results Window`. There are also many `R` tutorials on the Internet and some useful books in the Science Library.
+
+The [Quick-R](http://www.statmethods.net/index.html) web page, is a good and brief introduction to `R`. 
+
+## Installing R
+
+A brief introduction to `R` and visual instructions on how to install it can be found on the following  [YouTube](https://www.youtube.com/watch?v=Uenf8DbOjz0) video.
+
+The following instructions are given to install `R` on your own computer.
+
+> **Note:** Labs assume you have **R version 4.0.3** installed.
+
+### Instructions for Windows
+
+1. Go to the [CRAN](https://cran.r-project.org/) webpage [@cran].
+2. Select *Download R for Windows*.
+3. Click on *install R for the first time* and follow the instructions.
+4. Install `R` as any other program. You don't need a short cut to R.
+5. When installing, select the 64 bit option (unless your computer is an old 32 bit one).
+6. Download and install **RStudio Free Desktop version** from:  [RStudio](https://rstudio.com/products/rstudio/download/).
+
+### Instructions for Macintosh
+
+1. Go to the [CRAN](https://cran.r-project.org/) webpage.
+2. Select *Download R for (Mac) OS X*. 
+3. Download the last *binary* version of `R`.
+4. Follow the link to download [XQuartz](https://www.xquartz.org/).
+5. Download and install **RStudio Free Desktop version** from:  [RStudio](https://rstudio.com/products/rstudio/download/).
+6. Install all the packages that you downloaded.
+7. Open `RStudio` and go to *Tools > Terminal > New Terminal*.
+8. Select the tab for *Terminal* on the left bottom panel of `RStudio`.
+9. Type: `xcode-select --install` in the terminal and click the *Return* or *Enter* Key.
+10. Close the terminal.
+
+
+### Installing extra packages
+
+We need to install extra packages that add additional commands to `R` [@cran], one of them, `pubh` [@pubh] is essential for both PUBH725 and PUBH726. Open `RStudio` and copy the following commands in the *Console* panel.
+
+> **Note:** Labs assume you have **`R` version 4.1.1** or later and **`pubh` version 1.2.5** or later.
+
+```{r}
+#| eval: false
+install.packages("easystats", repos = "https://easystats.r-universe.dev")
+```
+
+```{r}
+#| eval: false
+install.packages(c("bestglm", "bookdown", "broom.mixed", "epiDisplay",
+                   "forecast", "ftExtra", "GGally", "ggeffects",
+                   "ggfortify",  "ggpubr", "ggraph",  "ggsci", "heatmaply", 
+                   "import", "ISwR", "jtools", "latex2exp", "plotly", 
+                   "pubh", "psych", "qqplotr", "reshape2", "rmarkdown", 
+                   "rms", "rstatix", "sjlabelled", "sjPlot", "sjmisc", 
+                   "scales", "season", "sparkline",  "tidyverse", "vcd"))
+```
+
+## Setting up RStudio
+
+The first thing you would like to do, is to organise all your documents on a single *directory* (*folder*). For better results, please follow these instructions:
+
+1. Create a new directory in your computer, within your **Documents** directory and name it **PUBH725**.
+2. Create a sub directory within your new directory, **PUBH725** and name it **data**.
+3. Create a sub directory within your new directory, **PUBH725** and name it **figures**.
+4. Open `RStudio` and go to `File > New Project`. Select **Existing Directory** (see Figure \@ref(fig:NewProject)).
+5. Browse for the directory **PUBH725** in your computer and select **Create Project**.
+
+```{r}
+#| label: fig-NewProject
+#| echo: false
+#| fig-cap: "Window for creating a New Project. Select option `Existing Directory`."
+knitr::include_graphics("figures/NewProject.png", 3)
+```
+
+There are several functions contained on packages; these packages have to be loaded for each new **session** or **script**. We are going to learn how to load these packages in the first lab.

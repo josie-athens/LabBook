@@ -1,0 +1,491 @@
+---
+title: "Laboratory 5. Inferential Statistics: Continuous Outcomes"
+subtitle: "~ PUBH 725 ~"
+author: "Josie Athens"
+date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
+output:
+  bookdown::html_document2:
+    theme: spacelab
+    highlight: kate
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    toc_depth: 3
+    number_sections: false
+    code_folding: show
+    code_download: true
+  bookdown::word_document2:
+    toc: yes
+    toc_depth: 3
+  bookdown::pdf_document2:
+    citation_package: natbib
+    latex_engine: xelatex
+    highlight: tango
+    keep_tex: yes
+bibliography: packages.bib
+link-citations: yes
+always_allow_html: yes
+---
+
+```{r message = FALSE, results='hide'}
+rm(list = ls())
+library(tidyverse)
+library(rstatix)
+library(easystats)
+library(ggfortify)
+library(ggpubr)
+library(jtools)
+library(pubh)
+library(sjlabelled)
+library(sjPlot)
+library(sjmisc)
+
+import::from(latex2exp, TeX)
+import::from(epiDisplay, ci)
+theme_set(sjPlot::theme_sjplot2(base_size = 10))
+theme_update(legend.position = "top")
+options('huxtable.knit_print_df' = FALSE)
+options('huxtable.autoformat_number_format' = list(numeric = "%5.2f"))
+knitr::opts_chunk$set(comment = NA, dpi = 300, 
+                      fig.width = 6, fig.height = 4)
+```
+
+# Overview
+
+In this laboratory, we will learn about hypothesis testing, in particular, one-sample $t$-tests, and two-sample $t$-tests for means.
+
+Once you have completed this laboratory, you should feel comfortable:
+
+-   Generating confidence intervals for means.
+-   Performing one-sample $t$-tests against a hypothesised mean.
+-   Performing two-sample $t$-tests, using either paired or independent samples.
+-   Performing non-parametric tests on continuous outcomes
+
+## Summary of New Commands
+
+| **Command**      | **Library** | **Function**                                        |
+|------------------|-------------|-----------------------------------------------------|
+| **gen_bst_df**   | *pubh*      | Estimates confidence intervals by group             |
+| **shapiro_test** | *rstatix*   | Performs the Shapiro-Wilk normality test            |
+| **TeX**          | *latex2exp* | Converts *LaTeX* expressions for use in plot labels |
+| **var.test**     | *stats*     | Performs variance ratio test                        |
+| **wilcox_test**  | *rstatix*   | Performs Wilcoxon-Mann-Whitney test                 |
+
+# Confidence Intervals around the Mean
+
+> **Example:** The data set we will be using for this laboratory is from Bernard, GR, *et al*. (1997) The effects of ibuprofen on the physiology and survival of patients with sepsis, *N Engl J Med* 336(13): 912--918. Here is an abbreviated version of the abstract.
+
+> "$\dots$ we conducted a randomized, double-blind, placebo-controlled trial of intravenous ibuprofen$\dots$ in 455 patients who had sepsis, defined as fever, tachycardia, tachypnea, and acute failure of at least one organ system. In the ibuprofen group, but not the placebo group, there were significant declines in [various measures including] temperature$\dots$ However, treatment with ibuprofen did not reduce the incidence or duration of shock or the acute respiratory distress syndrome and did not significantly improve the rate of survival at 30 days (mortality, 37 percent with ibuprofen vs. 40 percent with placebo)."
+
+Please read the help file by typing `?Bernard` in the **Console** panel.
+
+Let's take a look at the head of the data:
+
+```{r}
+data(Bernard)
+Bernard %>% glimpse()
+```
+
+We start by saving the label for baseline temperature in a new variable:
+
+```{r}
+btemp = TeX("Baseline Temperature ($^{\\degree}$C)")
+```
+
+> **Note:** The function `TeX` allows us to include symbols and mathematical expressions in plots and labels using *LaTeX* syntax. *LaTeX* commands are declared between two dollar signs. Special symbols, like Greek letters, use `\`. In `Markup` documents, you only use one `\` (the standard in *LaTeX*), but in `R` functions, you need to use two instead of one, hence `$\\degree$` produces $^{\circ}$. Besides `$\degree$`, the most common symbols are Greek letters, for example, `$\\alpha$` produces $\alpha$ in `R` functions.
+
+> **Exercise:** Construct a histogram of baseline temperatures in $^{\circ}C$ with a normal curve superimposed.
+
+```{r fig1, fig.cap="Distribution of baseline temperature from the `Bernard` data set."}
+Bernard %>%
+  hist_norm(~ temp0, fill = "slategray", bins = 20,  
+         xlab = btemp)
+```
+
+We will now estimate a 95% confidence interval for mean baseline temperature for all patients.
+
+```{r}
+Bernard %$% ci(temp0) %>% round(2)
+```
+
+## Bootstrap
+
+Recall that the distribution of samples follows a normal distribution. For example, the distribution of means follows a normal distribution. If we obtain, for instance, a thousand samples with replacement and for each one of them we estimate a statistic (e.g., the mean), we will end up with a population of 1,000 statistics. The distribution of the statistics is normal, and it is easy to estimate confidence intervals from them (they correspond to quantiles). This is independent of the original distribution of our original variable of interest. This approach is known as bootstrapping. We usually run the calculation by taking 1,000 or 10,000 samples.
+
+```{r}
+Bernard %$% bst(temp0)
+```
+
+> **Exercise:** Estimate the 95% bootstrap CIs for the temperature after 36 hr of treatment (`temp10`).
+
+```{r}
+Bernard %$% bst(temp10)
+```
+
+# Tests for Means
+
+## One-sample $t$-tests
+
+Perform the following two-sided one-sample $t$-test, where the normal core temperature is 37$^{\circ}C$. Note that because sepsis was diagnosed in this case by a set of symptoms including fever, you would be very surprised if there were no evidence of a difference between the mean baseline temperature of sepsis patients and the normal body temperature.
+
+If we define $\bar x$ as the mean baseline temperature, our two hypotheses are:
+
+-   $H_0: \bar x = 37^{\circ}C$
+-   $H_A: \bar x \neq 37^{\circ}C$
+
+Take a look at the help file of `t.test` to get familiarised with its options. By default, we are using a two-sided test, with a significant $\alpha=0.05$ (95% CI).
+
+```{r}
+Bernard %>% 
+  t_test(temp0 ~ 1, mu = 37, detailed = TRUE)
+```
+
+> **Interpretation:** We are making a one-sample test, comparing the mean baseline temperature, against the mean reference value of $\mu$ = 37$^{\circ}C$. Because the test is two-sided, if our mean value is significantly greater or significantly less than $\mu$ = 37$^{\circ}C$ we reject the null hypothesis. The probability of observing a mean baseline temperature of $\bar x$ = 37$^{\circ}C$ in our sample is $p$ \< 0.001. The mean baseline temperature in our sample was $\bar x$ = 38.0$^{\circ}C$ (95% CI: 37.9$^{\circ}C$, 38.1$^{\circ}C$).
+
+One of the assumptions of the one-sample $t$-test is that the distribution of the variable is normal. Was that the case?
+
+```{r fig2, fig.cap="Distribution of baseline temperatures for the `Bernard` data set. (a) Histogram with a superimposed normal curve. (b) QQ-plot against the standard normal distribution."}
+p1 = Bernard %>%
+  hist_norm(~ temp0, bins = 30, 
+            fill = "thistle3") %>%
+  gf_labs(x = btemp)
+
+p2 = Bernard %>%
+  qq_plot(~ temp0) %>%
+  gf_labs(y = btemp)
+
+plots(p1, p2, n_columns = 2, tags = "a")
+```
+
+> **Interpretation:** There are deviations from normality in baseline temperature. Lower temperatures are particularly very unlikely to come from a normal distribution.
+
+Our sample is large enough to not be worried about small deviations from normality. In healthy subjects, the temperature would be expected to be centred, and normally distributed. We will look at options when we have concerns about the $t$-test later in this lab.
+
+## Paired $t$-tests
+
+> **Example:** Assume we want to know if there was a significant decrease in the mean temperature at 36 hours in the Placebo group. The $t$-test assumes that data is independent. In this example, the same subjects were measured twice: at baseline and 36 hours. This is a classic example of a *paired* analysis.
+
+We want to understand what a paired $t$-test does; therefore, before performing the test, we will go the long route, to make things clearer.
+
+> **Exercise:** Calculate the change in temperature from baseline (`temp0`) to 36 hours (`temp10`), calling the new variable `temp_change`. Based on the order of subtraction you used, think about whether an increase in temperature from baseline to 36 hours should be represented by a positive or a negative value in `temp_change` (e.g. I always use Final-Baseline and then interpret the sign: a positive sign implies increase, a negative one, decrease).
+
+```{r}
+Bernard = Bernard %>%
+  mutate(
+    temp_change = temp10 - temp0
+  ) %>%
+  var_labels(
+    temp_change = "Temperature change (final - baseline)"
+  )
+```
+
+We can estimate the 95% CI of `temp_change`, stratified by treatment group.
+
+```{r}
+Bernard %>%
+  gen_bst_df(~ temp_change|treat)
+```
+
+> **Question:** What do you conclude from the 95% CI for the temperature change in the placebo group?
+>
+> **Answer:** The mean decrease in temperature from baseline to 36 hr in the placebo group was 0.50$^{\circ}C$ (95% CI: 0.36$^{\circ}C$, 0.64$^{\circ}C$). There was a significant placebo effect as the 95% CI for the temperature change in the placebo group did not include the null value of zero.
+
+We perform a two-sided one-sample $t$- test on temperature change for the placebo group. If we define $\bar x_{cp}$ as the mean temperature change in the placebo group, then our hypotheses are:
+
+-   $H_0: \bar x_{cp}=0$
+-   $H_A: \bar x_{cp} \neq 0$
+
+```{r}
+Bernard %>%
+  filter(treat == "Placebo") %>% 
+  t_test(temp_change ~ 1, detailed = TRUE)
+```
+
+For a paired test, we do not need to generate the vector of differences (`temp_change`), we just state that the test is paired. The sign of the result will depend on the order of the variables in the command.
+
+If we define $\bar x_{bp}$ as the mean baseline temperature in the placebo group and $\bar x_{fp}$ as the final temperature in the placebo group, our hypotheses are:
+
+-   $H_0: \bar x_{fp} - \bar x_{bp} = 0$
+-   $H_0: \bar x_{fp} - \bar x_{bp} \neq 0$
+
+```{r}
+Bernard %>% 
+  filter(treat == "Placebo") %>% 
+  pivot_longer(
+    cols = c(temp10, temp0),
+    names_to = "Time",
+    values_to = "Temperature"
+  ) %>% 
+  t_test(Temperature ~ Time, paired = TRUE, detailed = TRUE) %>% 
+  as.data.frame() %>% 
+  round_num(2)
+```
+
+> **Exercise:** Construct a QQ-plot of `temp_change` from subjects in the placebo group, against the standard normal distribution to check for the normality assumption.
+
+```{r fig3, fig.cap="QQ-plot of temperature difference (final - baseline) for sepsis patients in the placebo group."}
+Bernard %>%
+  select(temp_change) %>% na.omit() %>%
+  qq_plot(~ temp_change)
+```
+
+> **Interpretation:** On average, sepsis subjects in the placebo group, significantly decreased their baseline temperatures by 0.50$^{\circ}C$ (95% CI: 0.35$^{\circ}C$, 0.64$^{\circ}C$, $p$ \< 0.001, paired $t$-test).
+
+> **Note:** The 95% CI reported by the $t$-test, may not be the same as those that we estimated before because previously we estimated a bootstrap CI.
+
+## Two-sample $t$-tests
+
+Our real question of interest is to test if given Ibuprofen was statistically different from given placebo in patients with sepsis. This is a two-sided, two-sample hypothesis. The two samples are independent (treatment groups), and our variable of interest is `temp_change`.
+
+One of the assumptions is that the distribution of `temp_change` is normal for each group. The another big assumption is that the variance is the same. To compare variances, we perform a variance test. The null hypothesis is that the ratio of the two variances is equal to one (same variance) and the alternative is that is different from one. A $p \geq$ 0.05 means that there is no statistical difference between the two variances and, therefore, that the assumption of homogeneity of variances holds.
+
+First, we perform a standard descriptive analysis on `temp_change`.
+
+```{r}
+Bernard %>%
+  estat(~ temp_change|treat)
+```
+
+We perform a variance test with `var.test`. As we will use a formula in the syntax, we do not need to use `with` and can define the data within the function:
+
+```{r}
+var.test(temp_change ~ treat, data = Bernard)
+```
+
+> **Interpretation:** Subjects in the treatment group had, on average, a higher decrease in their baseline temperature (about 0.5$^{\circ}C$ more decrease) than subjects in the placebo group. We do not know yet if that difference is significant or not. Although the standard deviations look very similar, there was more variability in the placebo group (based on the relative dispersion). The values of relative dispersions are relatively high as our variable is a difference.
+
+> **Note:** Checking for assumptions is part of our analysis, but not something we would usually report.
+
+Let's perform the $t$-test.
+
+```{r}
+Bernard %>% 
+  t_test(temp_change ~ treat, detailed = TRUE, var.equal = TRUE) %>% 
+  as.data.frame()
+```
+
+> **Interpretation:** The test reports the variance ratio of Placebo/Ibuprofen as Placebo is the first level. Therefore, the variance ratio on the temperature change after 36 hours of Placebo/Ibuprofen = 0.84 (95% CI: 0.63, 1.11). There is no statistical difference between the two variances ($p$ = 0.212, variance $F$-test).
+
+> **Note:** For two-samples, `t.test` assumes by default that the variances are not equal (but not too different!).
+
+> **Question:** What is your conclusion?
+>
+> **Answer:** On average, patients who received Ibuprofen decreased their base line temperatures $0.54^{\circ}C$ more than patients receiving a placebo 36 hr after either intervention (95% CI: $0.32^{\circ}C$, $0.75^{\circ}C$). This difference was found to be statistically significant ($p$ \< 0.001, two-sample $t$-test).
+
+> **Example:** We will use data on energy expenditure for lean and obese woman.
+
+```{r}
+energy = read_rds("data/energy.rds")
+energy %>% glimpse()
+```
+
+We can start by obtaining some general statistics and then testing the hypothesis of whether both groups have the same energy expenditure.
+
+> **Exercise:** Calculate descriptive statistics for variable `expend` by `stature` from the `energy` data set.
+
+```{r tab1}
+energy %>%
+  estat(~ expend|stature) %>%
+  as_hux() %>% theme_pubh(1) %>%
+  set_caption("Descriptive statistics of energy expenditure in women.")
+```
+
+> **Question:** What are your general observations from the descriptive analysis?
+>
+> **Answer:** On average, obese women have more energy expenditure than lean woman, but we do not know if that difference is significant. Both groups of women show the same variance on energy expenditure and show a positive skew on the distribution (the medians are relatively lower than the means).
+
+Given that our samples are relatively small (less than 30 observations per group), the best way to graphically compare distributions is by strip plots.
+
+> **Exercise:** Construct strip plots with error bars for energy expenditure by stature.
+
+```{r fig4, fig.cap="Comparison of 24 hr energy expenditure between obese and lean woman for the `energy` data set. Error bars represent 95% bootstrap CIs around the mean."}
+energy %>%
+  strip_error(expend ~ stature)
+```
+
+We can check graphically for normality. Strictly speaking, the mean difference is the one that has to be normally distributed, for simplicity, we will look at the distribution of energy for each group, as that is a good indicator about normality on the mean difference.
+
+```{r fig5, fig.cap="QQ-plots of 24 hr energy expenditure of women against the standard Normal distribution by stature status."}
+energy %>%
+  qq_plot(~ expend|stature)
+```
+
+There was no sign of a difference in variability in the descriptive statistics, but we can test for that.
+
+```{r}
+var.test(expend ~ stature, data = energy)
+```
+
+As the variance is not significantly different between the two groups and though we have some extreme observations, there was no clear departure from normality either. The $t$-test is robust enough for small departures from normality so that we can perform our traditional test safely.
+
+> **Exercise:** Perform a two-sample $t$-test to compare the mean 24 hr energy expenditures between the two group of women in the `energy` data set.
+
+```{r}
+energy %>% 
+  t_test(expend ~ stature, detailed = TRUE,
+         ref.group = "obese",  var.equal = TRUE) %>% 
+  as.data.frame()
+```
+
+> **Question:** What is your conclusion from the test?
+>
+> **Answer:** Obese women have on average 2.23 MJ more 24 hr energy expenditure than lean women (95% CI: 1.05 MJ, 3.41 MJ). This difference was statistically significant ($p$ \< 0.001, $t$-test).
+
+# Non-Parametric Tests
+
+In some disciplines, researchers are not interested in the magnitude of the difference, e.g., when there is no precise knowledge of the interpretation of the scales. Under those circumstances, they may choose *a priori*, to use non-parametric tests for relatively small samples.
+
+In our current example, the $p$-value obtained from the standard test was very small. This means that a non-parametric test would be very unlikely to change the main result from the analysis. Changes may happen when we have $p$-values on the border of being significant.
+
+For instructional purposes, we will perform a non-parametric test, so you get familiar with the commands, interpretation, and comparison with the classic test. Again, for real data analysis, we do NOT perform both.
+
+> **Note:** We never, ever perform both a parametric and a non-parametric test. That decision has to be taken *a priori*, given our assumptions. When we perform both tests, we may fall into the temptation to report the more beneficial results; in other words, by performing both tests, we introduce bias in our analysis.
+
+The associated non-parametric test is the Wilcoxon-Mann-Whitney test, more commonly known as Mann-Whitney test.
+
+```{r}
+energy %>% 
+  wilcox_test(expend ~ stature, ref.group = "obese", detailed = TRUE)
+```
+
+> **Question:** How the non-parametric tests compare to the classic test?
+>
+> **Answer:** Both tests would render the same conclusion, that the difference in energy expenditure between obese and lean women is statistically significant. The Mann-Whitney test does not report the magnitude of the difference and a CI is not reported.
+
+As a significant difference was found in our test, that result can be shown graphically on our report by including a line on top of the two groups.
+
+```{r fig6, fig.cap = "Comparison of energy expenditure between lean and obese women from the energy data set. Error bars represent 95% bootstrap CIs (∗p = 0.002, Mann-Whitney test). "}
+energy %>%
+  strip_error(expend ~ stature) %>%
+  gf_star(1, 13.3, 2, 13.4, 13.5)
+```
+
+> **Example:** Paired tests are used when there are two measurements on the same experimental unit. We will use data on pre- and post-menstrual energy intake in a group of 11 women.
+
+```{r}
+data(intake, package = "ISwR")
+intake %>% glimpse()
+```
+
+We can start, as in the example before, with descriptive statistics.
+
+```{r}
+intake %>%
+  descr(pre, post) %>%
+  select(label, n, mean, sd, md, skew)
+```
+
+We are familiar now with the variable energy expenditure. As in the previous case, the variance is the same, and the distribution is slightly positive skewed.
+
+Let's work on the assumption that we are not interested in the magnitude of the difference but only if that difference is significant or not. On those circumstances and given the small sample size, we would perform a non-parametric test that would be equivalent to the paired $t$-test.
+
+> **Note:** Having a small sample does not imply that a non-parametric test should be used. For example, when we know or assume that our variable of interest is normally distributed, we use a parametric test.
+
+```{r warning=FALSE}
+intake %>%
+  pivot_longer(everything(), names_to = "group", values_to = "energy") %>% 
+  wilcox_test(energy ~ group, paired = TRUE)
+```
+
+> **Question:** What is your conclusion from the analysis?
+>
+> **Answer:** On a sample of 11 women, we found that women have a significantly higher energy intake before their menstrual period than after ($p$ = 0.004, Wilcoxon test for paired data).
+
+> **Example:** We are going to use an example from Altman on the number of CD4$^+$ T cells and CD8$^+$ T cells in patients with Hodgkin's disease or with disseminated malignancies (the Non-Hodgkin's disease group).
+
+```{r}
+data("Hodgkin")
+Hodgkin %>% glimpse()
+```
+
+> **Exercise:** Generate a new variable, named `ratio` that will contain the ratio of CD4$^+$/CD8$^+$ T cells.
+
+```{r}
+Hodgkin = Hodgkin %>%
+  mutate(
+    ratio = CD4 / CD8
+  ) %>%
+  var_labels(
+    ratio = "CD4+ / CD8+ T cells"
+  )
+```
+
+> **Exercise:** Generate a table with descriptive statistics for `ratio`, stratified by `Group`.
+
+```{r tab2}
+Hodgkin %>%
+  estat(~ ratio|Group) %>%
+  as_hux() %>% theme_pubh(1) %>%
+  set_caption("Descriptive statistis of T cells ratio by type of disease.")
+```
+
+> **Question:** What are your initial observations from the descriptive analysis?
+>
+> **Answer:** The non-Hodgkin group has a higher ratio of CD4$^+$/CD8$^+$ T cells than the Hodgkin group, though we do not know yet if that difference is statistically significant or not. The Hodgkin group shows more variability on their ratio values than the non-Hodgkin group; we do not know yet if that difference in variance is statistically significant or not.
+
+> **Exercise:** Construct QQ-plots of `Ratio` against the standard normal distribution for each group.
+
+```{r fig7, fig.cap="QQ-plots of the ratio of CD4$^+$/CD8$^+$ T cells against the standard normal distribution."}
+Hodgkin %>%
+  qq_plot(~ ratio|Group, pch = 16) 
+```
+
+We can use the *Shapiro-Wilk* test for testing the normality assumption. The null hypothesis is that the distribution is normal, thus a $p$ \< 0.05 would provide statistical evidence against the normality assumption. We avoid using the Shapiro-Wilk test for very small samples ($n$ \< 10 observations) or large samples ($n$ \> 100 observations). For this paper, we will use a graphical approach to check the normality assumption; we show the results of the test, for illustration purposes.
+
+```{r}
+Hodgkin %>% 
+  group_by(Group) %>% 
+  shapiro_test(ratio)
+```
+
+> **Exercise:** What about the homogeneity of variances? Perform a variance test for the variable `Ratio`.
+
+```{r}
+var.test(ratio ~ Group, data = Hodgkin)
+```
+
+> **Question:** What is your conclusion?
+>
+> **Answer:** There is no statistical difference between the variance of CD4$^+$/CD8$^+$ T cells between non-Hodgkin's and Hodgkin's lymphoma patients ($p$ = 0.321, variance $F$-test).
+
+We have the following options:
+
+1.  Consider that the $t$-test is powerful enough to deal with small deviations from normality. *Pros:* We do not need to change the scale, and we would know the magnitude of the difference between groups with confidence intervals; besides, the variance was not statistically different (this assumption, I consider is more important). *Cons:* The two groups do not share the same distribution; thus, we are comparing things that we already know are different, furthermore, do we know which difference in ratios would be biologically significant?
+
+2.  Log-transform `Ratio` and perform a classic $t$-test. *Pros:* Both groups would have the same distribution (normal), and we could report the magnitude of the difference with CIs. *Cons:* When we log-transform we need to back-transform our results, by doing that, differences become ratios, so our final result would be a ratio of ratios with CIs, can we biologically interpret that? What a ratio of ratios would mean and what would be the minimum ratio that we could consider as relevant?
+
+3.  Perform a Mann-Whitney test. *Pros:* The results would be independent of the original distribution of the variable. *Cons:* We would not know about the magnitude of the difference.
+
+> **Note:** If you log-transform the variable `Ratio`, you will find that it follows a normal distribution, in both groups, so what are our options? What do we do?
+
+**Conundrum!**
+
+For the current example, it is very likely that most statisticians would favour one of the first two options. As you may know, I am biased in the sense that my background is in sciences. What would be my rationale?
+
+> **Note:** The people responsible for performing the trial or experiment are the ones familiar with the variables and ways of interpreting results. Statisticians are the professionals with the expertise to make the correct analysis. The best results are obtained when there is good communication between the two.
+
+I know that for the normal, healthy population about 60% of their T-cells is CD4$^+$ and about 40% CD8$^+$, i.e., a `Ratio` = 1.5. Given this, I know that the population who is showing abnormal levels is the group of non-Hodgkin's lymphoma (see descriptive analysis). I would not be interested in knowing the confidence intervals of that difference.
+
+Given that:
+
+-   The sample size is relatively small.
+-   The distribution of CD4$^+$/CD8$^+$ T cells is not the same in the two groups.
+-   Small changes (regardless of magnitude) in the distribution of T cell populations have significant biological consequences.
+
+I would perform a non-parametric test. Once I know that this difference is statistically significant (i.e., very unlikely due to chance), I would conduct further studies to find out more about what is happening at a cellular and molecular level.
+
+Would it be wrong to make a parametric test? Not at all, as long as the rationale and assumptions are clear. What is wrong it to perform both tests. We are not going to do that and perform only the Mann-Whitney test.
+
+```{r}
+Hodgkin %>% 
+  wilcox_test(ratio ~ Group)
+```
+
+> **Exercise:** Construct a strip plot with error bars to show your final results.
+
+```{r fig8, fig.cap="Comparison of the ratio of CD4$^+$/CD8$^+$ T cells between lymphoma patients. Error bars represent 95% confidence intervals around the mean (black circles). $^{∗∗}p$ = 0.007, Mann-Whitney test."}
+Hodgkin %>%
+  strip_error(ratio ~ Group) %>%
+  gf_star(1, 4, 2, 4.1, 4.2, "**")
+```

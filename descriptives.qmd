@@ -1,0 +1,532 @@
+# Descriptive Statistics
+
+
+```{r}
+#| message: false
+#| results: hide
+rm(list = ls())
+library(tidyverse)
+library(rstatix)
+library(easystats)
+library(ggfortify)
+library(ggpubr)
+library(jtools)
+library(pubh)
+library(sjlabelled)
+library(sjPlot)
+library(sjmisc)
+
+import::from(latex2exp, TeX)
+import::from(epiDisplay, ci)
+theme_set(sjPlot::theme_sjplot2(base_size = 10))
+theme_update(legend.position = "top")
+options('huxtable.knit_print_df' = FALSE)
+options('huxtable.autoformat_number_format' = list(numeric = "%5.2f"))
+```
+
+## Overview
+
+In this laboratory, we will look at performing descriptive statistics and tabular analysis. We will learn to make quality tables and how to export them for publication.
+
+Once you have completed this lab, you should feel comfortable:
+
+-   Obtaining basic descriptive statistics for categorical variables (factors).
+-   Obtaining basic descriptive statistics for continuous variables.
+-   Making tables of descriptive statistics.
+-   Exporting tables and inserting them into other applications.
+
+> **Summary of New Commands**
+
+| **Command**      | **Library** | **Function**                                                                      |
+|------------------|-------------|-----------------------------------------------------------------------------------|
+| **as_hux**       | *huxtable*  | Converts a objects into a hux tables                                              |
+| **add_footnote** | *huxtable*  | Adds a footnote to a hux table                                                    |
+| **cosm_sum**     | *pubh*      | Cosmetics for *tbl_summary*                                                       |
+| **cross_tbl**    | *pubh*      | Tabulates contingency tables                                                      |
+| **descr**        | *sjmisc*    | Descriptive statistics of continuous variables                                    |
+| **estat**        | *pubh*      | Descriptive statistics of continuous variables                                    |
+| **freq_cont**    | *pubh*      | Frequency tables of continuous variables                                          |
+| **group_by**     | *dplyr*     | Group by one or more variables                                                    |
+| **insert_row**   | *huxtable*  | Adds rows on top of hux tables                                                    |
+| **median**       | *base*      | Median                                                                            |
+| **n**            | *dplyr*     | Number of observations                                                            |
+| **rec**          | *sjmisc*    | Recode variables                                                                  |
+| **rel_dis**      | *pubh*      | Coefficient of variation                                                          |
+| **sd**           | *base*      | Standard deviation                                                                |
+| **seq**          | *base*      | Creates a vector of regular sequences                                             |
+| **summarise**    | *dplyr*     | Summarise continuous variables by given statistics                                |
+| **summary**      | *base*      | Summary of objects                                                                |
+| **tbl_summary**  | *gtsummary* | Constructs tables of descriptive statistics                                       |
+| **tbl_strata**   | *gtsummary* | Constructs tables of descriptive statistics stratified by 2 categorical variables |
+| **theme_pubh**   | *pubh*      | Theme for hux tables                                                              |
+
+## Introduction
+
+For understanding descriptive statistics, first we should be able to distinguish between:
+
+1.  Big and small datasets. For our paper, we will consider a large data set if the number of observations is greater or equal than 100. We will define a small dataset if the number of observations is less or equal than 30.
+2.  Numerical and categorical variables.
+3.  Continuous and discrete variables.
+4.  Continuous variables with a Normal distribution (or close enough) and those not normally distributed.
+
+:::{.callout-note}
+We will use two datasets: `wcgs` as an example of a large dataset and `kfm` as an example of a small dataset.
+:::
+
+Load the `wcgs.rds` dataset that we created in the previous lab.
+
+```{r}
+wcgs = read_rds('data/wcgs.rds')
+```
+
+We will also use the `kfm` dataset from the `ISwR` package; the data records information about infants weighed before and after breast feeding. For more information, you can look at the corresponding help file. First, we load the data.
+
+```{r}
+data(kfm, package = "ISwR")
+kfm = kfm %>% as_tibble()
+
+kfm %>% head()
+```
+
+Variable `sex` is categorical, a factor with two levels or categories, let's take a look at them:
+
+```{r}
+kfm %$% levels(sex)
+```
+
+I would like the levels of `sex` to have the first letter in capitals (this is optional). There are different ways of changing names of levels in a factor, one of them is to simply provide a vector of characters with the new names, in the same order as they appear in the levels of the variable. A second option is to use `rec`. In `rec` we provide new values in a `list`, so the order does not really matter.
+
+```{r}
+kfm = kfm %>%
+  mutate(
+    sex = rec(sex, rec = "girl=Girl; boy=Boy")
+  )
+
+kfm %$% levels(sex)
+```
+
+We add labels to `kfm` and save it in our directory.
+
+```{r}
+kfm = kfm %>%
+  var_labels(
+     dl.milk = 'Breast-milk intake (dl/day)',
+     sex = 'Sex',
+     weight = 'Child weight (kg)',
+     ml.suppl = 'Milk substitute (ml/day)',
+     mat.weight = 'Maternal weight (kg)',
+     mat.height = 'Maternal height (cm)'
+     )
+```
+
+```{r}
+write_rds(kfm, "data/kfm.rds")
+```
+
+## Categorical variables
+
+For categorical variables (including ordinal variables), we want to know and report the number of observations on each category. We can use `freq_table` from the `rstatix` package.
+
+```{r}
+wcgs %>% freq_table(arcus)
+```
+
+```{r}
+wcgs %>% freq_table(arcus, na.rm = FALSE)
+```
+
+### Epidemiology tables
+
+In epidemiology, it is frequent to have two by two (2 $\times$ 2) tables. In those cases, the outcome is binary (e.g., disease: present/absent) and the exposure is binary too. Sometimes, it is also desirable to have $n \times$ 2 tables in which we are comparing more than two groups about a particular binary outcome. For *PUBH 725* and *PUBH 726*, we will display the exposure of interest in the columns so the percentages for each categorical variable represent prevalences.
+
+```{r}
+#| label: tbl-tab1
+#| tbl-cap: "Distribution of coronary heart disease events (CHD) by behaviour pattern."
+wcgs %>%
+  mutate(
+    chd = relevel(chd, ref = "CHD"),
+  ) %>%
+  copy_labels(wcgs) %>%
+  select(dib_pat, chd) %>% 
+  cross_tbl(by = "dib_pat") %>%
+  theme_pubh(2) %>% 
+  add_footnote("Data from the WCGS.", font_size = 9)
+```
+
+:::{.callout-note}
+1.  In the previous code, we changed the reference for our outcome as it is standard to report first cases/treatment and then controls.
+2.  With `mutate` we are generating new variables, which happen to have the same names as the old variables, thus we replace them. By doing that, as they are new, they are no longer labelled. To preserve the labels, we use `copy_labels`.
+3.  As we did not assign the changes to a new data frame, the changes we made were not stored and their impact would be only in the code we provided. Why is this important? Because if we perform inferential statistics, we want for controls to still be the reference.
+4.  Formal tables, as those used for reports, should be self-explained, formatted, include units, use good labels, be numbered and include a caption/legend.
+    1.  The first line in the code block, is hidden on reports, I used it for the label: `#| label: tbl-tab1`
+    2.  The second line in the code block, is hidden on reports, I used it for the caption: `#| tbl-cap: "Distribution of coronary heart disease events (CHD) by behaviour pattern."`
+    3.  We can add more information in footnotes with `add_footnote`. In the current example, the size of the font is smaller (9 pt).
+5.  To reference the table in the text we type `@label` in our Markdown script, where `label` is the name of the chunk were we construct the table which starts with `tbl-`. In our current example, to refer to our first table, we would type: `@tbl-tab1`.
+:::
+
+By default, `cross_tbl` uses the label of the outcome as the name of the first column. When you `knit` to Word, the table is exported and you can edit it there, add captions, etc. Package `huxtable` allows us to add rows, caption, footnotes, etc.
+
+> **Exercise:** Generate a table for the relationship between behavioural pattern (`beh_pat`) and the presence of CHD (`chd`) from the WCGS dataset. Remember to display the exposure of interest in columns, so percentages represent prevalence.
+
+```{r}
+#| label: tbl-tab2
+#| tbl-cap: "Distribution of behavioural pattern by coronary heart disease (CHD) event."
+wcgs %>%
+  mutate(
+    chd = relevel(chd, ref = "CHD")
+  ) %>%
+  copy_labels(wcgs) %>%
+  select(beh_pat, chd) %>% 
+  cross_tbl(by = "beh_pat") %>%
+  theme_pubh(2) %>% 
+  add_footnote("Data from the WCGS.", font_size = 9)
+```
+
+> **Question:** What is your main observation from the distribution of cases?
+>
+> **Answer:** The prevalence of CHD in males in the **A** groups (\~ 11%) is about the double than the prevalence in males in the **B** groups (\~ 5%). The prevalence of CHD in the population is 8.1%.
+
+### Double stratification
+
+There are cases when we want to present distribution of categorical variables by a exposure of interest and stratified by another categorical variable (e.g. confounder) of interest.
+
+The following code shows how to generate this kind of tables.
+
+```{r tab3}
+#| label: tbl-tab3
+#| tbl-cap: "Distribution of coronary heart disease events (CHD) by behaviour pattern and smoking status."
+wcgs %>% 
+  select(chd, smoker, dib_pat) %>% 
+  mutate(
+    chd = relevel(chd, ref = "CHD"),
+    smoker = relevel(smoker, ref = "Smoker")
+  ) %>%
+  copy_labels(wcgs) %>%
+  tbl_strata(
+    strata = smoker,
+    .tbl_fun = ~ .x %>%
+      tbl_summary(by = dib_pat, missing = "no")
+  ) %>% 
+  cosm_sum() %>% theme_pubh(2) %>% 
+  set_align(1, everywhere, "center") %>% 
+  add_footnote("Data from the WCGS.", font_size = 9)
+```
+
+:::{.callout-note}
+1.  We construct the table with `tbl_strata` from `gtsummary`.
+2.  `tbl_summary` is the function behind `cross_tbl`.
+3.  The argument `missing = "no"` is used to not shown missing values.
+4.  With `cosm_sum` we add cosmetics to the table and converts it to a *huxtable*.
+:::
+
+## Continuous variables
+
+For continuous variables, we want to report a measure of central tendency and a measure of dispersion. To inspect a continuous variable, we would like to know more than only two statistics. For those purposes, we *summarise* the data. The function `summary` is a very basic function that displays a summary of statistics for variables, or information about statistical models (we will look at this capability in PUBH 726).
+
+There are several options to look at descriptive statistics of continuous variables. We will compare the following options:
+
+1.  `descr` from `sjmisc`
+2.  `estat` from `pubh`
+3.  `summarise` from `dplyr`
+
+Function `descr` has the advantage of including variable labels. It can be used to report the descriptive statistics of more than one variable. By default, it shows all the following columns:
+
+| Column name | Description                                |
+|-------------|--------------------------------------------|
+| type        | Type of variable                           |
+| label       | Label of variable                          |
+| n           | Number of non-missing (valid) observations |
+| NA.prc      | Missing percentage                         |
+| mean        | Arithmetic mean                            |
+| sd          | Standard deviation                         |
+| md          | Median                                     |
+| trimmed     | Trimmed mean                               |
+| range       | Range                                      |
+| skew        | Skewness                                   |
+
+For example, the descriptive statistics of blood cholesterol:
+
+```{r}
+#| label: tbl-tab4
+#| tbl-cap: "Descriptive statistics of blood cholesterol."
+tab4 = wcgs %>%
+  descr(chol) %>%
+  select(label, n, mean, sd, md, range, skew)
+
+names(tab4) = c("", "N", "Mean", "SD", "Median",
+                "Range", "Skewness")
+
+tab4 %>%
+  as_hux() %>% theme_pubh() %>% set_width(0.9) %>% 
+  add_footnote("Data from the WCGS.", font_size = 9)
+```
+
+:::{.callout-note}
+1.  First, we assign the table to a new object, `tab4`, so we can edit the name of the columns.
+2.  Next, we generate a *hux* table.
+3.  There are different *themes* available for *huxtables*. Be consistent and use the same theme for all your tables.
+4.  The theme `theme_pubh` draws horizontal lines bellow a particular `row`. The argument is a scalar or a vector which define the rows on which one wants to draw an under line, which in this example, is row one.
+:::
+
+The descriptive statistics of all continuous variables in `wcgs`:
+
+```{r}
+#| label: tabl-tab5
+#| tbl-cap: "Descriptive statistics of continuous variables."
+tab5 = wcgs %>%
+  descr(age, height, weight, sbp, dbp, chol) %>%
+  select(label, n, mean, sd, md, range, skew)
+
+names(tab5) = c("Variable", "N", "Mean", "SD", "Median",
+                "Range", "Skewness")
+
+tab5 %>%
+  as_hux() %>% theme_blue() %>%
+  set_width(0.9) %>% set_all_padding(3) %>% 
+  add_footnote("Data from the WCGS.", font_size = 9)
+```
+
+:::{.callout-note}
+1.  For illustration purposes, I used *theme_blue*.
+2.  Be consistent and use the same theme for all your tables.
+3.  The command `set_all_padding` is useful to change the space between the rows (padding).
+:::
+
+The function `estat` from the `pubh` package displays all the statistics that we are interested to calculate from continuous variables.
+
+```{r}
+#| label: tbl-tab6
+#| tbl-cap: "Descriptive statistics of blood cholesterol."
+wcgs %>% 
+  estat(~ chol) %>%
+  as_hux() %>% theme_pubh() %>% set_width(0.8) %>% 
+  add_footnote("Data from the WCGS.", font_size = 9)
+```
+
+In `estat` `N` is the number of observations, `Min.` is the minimum value, `Max.` is the maximum value, `SD` is the standard deviation and `CV` is the coefficient of variation or *relative dispersion*, defined as:
+
+$$CV = \frac{SD}{Mean}$$
+
+Finally, we can also decide which statistics we want to report using `summarise`.
+
+:::{.callout-tip}
+Read the help file of `summarise` to know more about available functions.
+:::
+
+```{r}
+wcgs %>%
+  summarise(
+    N = n(),
+    Mean = mean(chol, na.rm = TRUE),
+    SD = sd(chol, na.rm = TRUE),
+    Median = median(chol, na.rm = TRUE),
+    CV = rel_dis(chol)
+  )
+```
+
+### Understanding dispersion
+
+We will use the relative dispersion to gather information about the variability in our variable of interest. When we multiply the *CV* by 100, we have it as a percentage. Values of *CV* \< 10% indicate relatively small variability, which is better for further analysis. Values of *CV* \> 33% are of concern. We will consider variables with *CV* \> 30% having high variability and not normally distributed.
+
+In the normal distribution, about three standard deviations to the right and the left, include 99% of the population. If we had a physiological variable with a *CV* = 40%, some of the observations would be negative, and that would not be possible unless the variable was a difference.
+
+### Formulas
+
+We frequently use formulas in `R`. The general syntax of a formula is:
+
+`y ~ x, data = dataset`
+
+Where:
+
+-   `y` is the *response* variable (aka: dependent or outcome).
+-   `x` is the *explanatory* variable (aka independent, predictor or exposure). We can have more than one explanatory variable (e.g., confounders).
+-   `dataset` is the name of the data frame or tibble where the variables `x` and `y` can be found.
+
+:::{.callout-important}
+The symbol `~` is used in `R` for *formulas*. It can be interpreted as *depends on*. In the most typical scenario: `y ~ x` means "`y` depends on `x`" or "`y` is a function of `x`".
+:::
+
+### Frequency tables for continuous variables
+
+For relatively large samples, we can take a look at the distribution of a continuous outcome by breaking values in different number of classes (between 8 and 20) and constructing a frequency table:
+
+```{r}
+wcgs %$%
+  freq_cont(chol, bks = seq(100, 650, 50))
+```
+
+:::{.callout-note}
+We use `seq` to generate a sequence of numbers, the first argument is the starting point, the second argument the ending point and the third argument the size of the step.
+:::
+
+Frequency tables are the basis for constructing histograms and they represent a way to better understand the distribution of continuous variables.
+
+### Interpreting statistics
+
+Look at the minimum, maximum and the mean value of cholesterol. The mean is clearly closer to the minimum value than to the maximum, i.e., it is not in the centre of the two values. This fact indicates that we have subjects with relatively high values than the rest of the population; it may be just one *outlier*, a couple of *outliers* or that the distribution is clearly skewed to the right (positive).
+
+We will always start our analysis with descriptive and graphical analysis, to understand our variables. That does not mean that we are going to report everything: we have to be selective.
+
+In other words, for our preliminary analysis, when we are *inspecting* variables, we look at all the statistics and the distribution of continuous variables. For a manuscript, we would report only two statistics:
+
+1.  For variables following a normal distribution, we report the mean and the standard deviation. In most cases, these statistics are reported even when the variable is not normally distributed.
+2.  For variables which are clearly not normally distributed, we could report the median and the interquartile range (IQR).
+
+### Stratified Analysis
+
+It's common that we want to compare statistics from different groups, in the most typical scenario, the control and the experimental (or cases) group. For this reason, it is helpful to display statistics of continuous variables, stratified by groups of interest.
+
+```{r}
+#| label: tbl-tab7
+#| tbl-cap: "Descriptive statistics of blood cholesterol by coronary heart disease (CHD) event."
+wcgs %>%
+  estat(~ chol|chd) %>%
+  as_hux() %>% theme_pubh() %>% set_width(0.8) %>% 
+  add_footnote("Data from the WCGS.", font_size = 9)
+```
+
+:::{.callout-note}
+It is valid to input the `formula` as either `chol ~ chd` (read as `chol` depends on `chd`) or as `~ chol|chd` (read as `chol` given `chd`).
+:::
+
+Alternatively, we can use `group_by`.
+
+```{r}
+wcgs %>%
+  group_by(chd) %>%
+  descr(chol, show = c('label', 'n', 'mean', 'sd', 
+                       'md', 'skew'))
+```
+
+```{r}
+wcgs %>%
+  group_by(chd) %>%
+  summarise(
+    N = n(),
+    Mean = mean(chol, na.rm = TRUE),
+    SD = sd(chol, na.rm = TRUE),
+    Median = median(chol, na.rm = TRUE),
+    CV = rel_dis(chol)
+  ) 
+```
+
+> **Question:** What can you conclude from the descriptive statistics of cholesterol by CHD status?
+>
+> **Answer:** Subjects with a CHD event from the WCGS dataset have a mean value of blood cholesterol higher than those without a CHD event. We do not know if that difference is statistically significant or not.
+
+The advantage of `group_by` is that we can stratify for more than one variable, for example:
+
+```{r}
+wcgs %>%
+  group_by(chd, smoker) %>%
+  descr(chol, show = c('label', 'n', 'mean', 'sd', 
+                       'md', 'skew'))
+```
+
+```{r}
+#| label: tbl-tab8
+#| tbl-cap: "Descriptive statistics of cholesterol by coronary heart disease (CHD) event and smoking status."
+wcgs %>% 
+  select(chol, chd, smoker) %>% 
+  mutate(
+    chd = relevel(chd, ref = "CHD"),
+    smoker = relevel(smoker, ref = "Smoker")
+  ) %>%
+  copy_labels(wcgs) %>%
+  tbl_strata(
+    strata = smoker,
+    .tbl_fun = ~ .x %>%
+      tbl_summary(by = chd, missing = "no") 
+  ) %>% 
+  cosm_sum() %>% theme_pubh(2) %>% 
+  set_align(1, everywhere, "center") %>% 
+  add_footnote("Median (IQR). Data from the WCGS dataset.", 
+               font_size = 9)
+```
+
+> **Exercise:** Compare the statistics of breast-milk intake (`dl.milk`) by sex from the `kfm` dataset.
+
+```{r}
+#| label: tbl-tab9
+#| tbl-cap: "Descriptive statistics of breast-milk intake in babies."
+kfm %>%
+  estat(dl.milk ~ sex) %>%
+  as_hux() %>% theme_pubh() %>%
+  add_footnote("Data from the kfm dataset.", font_size = 9)
+```
+
+> **Question:** What are your main observations?
+>
+> **Answer:** Breast-milk intake by boys is almost one more dl/day than girls. We do not know if this difference is significant or not. Variability in breast-milk intake was the same between boys and girls.
+
+## Creating tables for publication
+
+It is very common to report the descriptive statistics from the data in the first table of papers. The strategy is to calculate the descriptive statistics for all our variables and then export it in a way the table could be read by a word processor or spreadsheet application.
+
+We can construct a single table of descriptive statistics for all of our variables with a single command. The function `mytable` from the `moonBook` package allows us to do that. For continuous variables, `mytable` displays means and standard deviations by default but that can be changed to display medians and inter quantile ranges instead.
+
+We partially remove `id` and `ncigs` it from the dataset using *negative indexing*.
+
+```{r}
+#| label: tbl-tab10
+#| tbl-cap: "Descriptive statistics of the WCGS dataset."
+wcgs %>% 
+  select(- c(id, ncigs)) %>% 
+  tbl_summary() %>% 
+  cosm_sum(bold = TRUE) %>% 
+  add_footnote("Median (IQR); n (%)", font_size = 9)
+```
+
+### Stratified tables
+
+We can use `cross_tbl` to report descriptive statistics of relevant variables, by exposure of interest. We will use negative selection, removing some columns.
+
+```{r}
+#| label: tbl-tab11
+#| tbl-cap: "Descriptive statistics of the WCGS dataset by behaviour pattern."
+wcgs %>%
+  select(-c(id, beh_pat, ncigs, time)) %>%
+  mutate(
+    chd = relevel(chd, ref = "CHD"),
+    arcus = relevel(arcus, ref = "Present"),
+    smoker = relevel(smoker, ref = "Smoker")
+  ) %>%
+  copy_labels(wcgs) %>%
+  cross_tbl(by = "dib_pat") %>% 
+  add_footnote("n (%); Median (IQR)", font_size = 9)
+```
+
+The WCGS was a cohort study, hence, observational. Some people like to display a column with $p$-values comparing the groups; `cross_tab` can display $p$-values for stratified tables. If displayed, those $p$-values come from univariate analysis.
+
+```{r}
+#| label: tbl-tab12
+#| tbl-cap: "Descriptive statistics of the WCGS dataset by behaviour pattern."
+wcgs %>%
+  select(-c(id, beh_pat, ncigs, time)) %>%
+  mutate(
+    chd = relevel(chd, ref = "CHD"),
+    arcus = relevel(arcus, ref = "Present"),
+    smoker = relevel(smoker, ref = "Smoker")
+  ) %>%
+  copy_labels(wcgs) %>%
+  cross_tbl(by = "dib_pat", p_val = TRUE) %>%  
+  add_footnote("n(%); Median (IQR);",font_size = 9)
+```
+
+In all tables before, for continues variables, `cross_tbl` reports by default median and IQR. By including the argument `method = 1`, `cross_tbl` would report mean and standard deviations.
+
+```{r}
+#| label: tbl-tab13
+#| tbl-cap: "Descriptive statistics of the WCGS dataset by behaviour pattern."
+wcgs %>%
+  select(-c(id, beh_pat, ncigs, time)) %>%
+  mutate(
+    chd = relevel(chd, ref = "CHD"),
+    arcus = relevel(arcus, ref = "Present"),
+    smoker = relevel(smoker, ref = "Smoker")
+  ) %>%
+  copy_labels(wcgs) %>%
+  cross_tbl(by = "dib_pat", method = 1) %>% 
+  set_width(0.9) %>%  
+  add_footnote("n (%); Mean (SD)", font_size = 9)
+```
