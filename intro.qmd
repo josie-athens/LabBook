@@ -132,7 +132,7 @@ The disadvantage of `.R` scripts is that you cannot produce a single document wi
 
 We will start by creating a mock notebook, using the template that comes with the `pubh` package [@pubh]. Open `RStudio` and select `File > New File > R Markdown...`.
 
-:::{.callout-caution}
+::: callout-caution
 For this paper, I will use the term of **Notebooks** for R Markdown (`.Rmd`) documents. Do NOT select `File > New File > R Notebook` to create the Notebook.
 :::
 
@@ -147,7 +147,7 @@ knitr::include_graphics("figures/Notebook1.png", 3, dpi = NA)
 
 Click `OK` or type the `Return` key. Have a look at the template; we will edit the script later. For the moment, Let's run the template as it is. To execute the Notebook, you only need to click on the `Knit` button which can be found in the *Source* panel. When you click *knit* (see **1** in @fig-fig4) for the first time, it will ask for a name to save your file. Give a name like *Lab1*. The result will appear on the *Display* panel, and two files will be created: *Lab1.Rmd* is the script, and *Lab1.html* is the output that you can open with any web browser.
 
-:::{.callout-tip}
+::: callout-tip
 Word can also open *html* files.
 :::
 
@@ -164,13 +164,13 @@ Codes are inserted in sections called *chunks* or *blocks*. Go to the end of the
 
 In @fig-fig4, the option `message = FALSE` was added to the first chunk, to hide messages from the output. You can change the options from a chunk by clicking on the *Cog button* (see **6** in @fig-fig4). Compile the *RMardown* script by clicking on the *Knit* button (see **1** in @fig-fig4).
 
-:::{.callout-tip}
+::: callout-tip
 For a quick reference on Markdown, go to `Help > Markdown Quick Reference`.
 :::
 
 When you *Knit* the document, it compiles the full document and displays the results on the *Display* panel. Sometimes, we want to check a particular command. For doing that, you can *transfer* your command from the *script* file by clicking on the small green arrow at the right of the code (see **3** and **6** in @fig-fig4). Depending on your preferences, the results will show on the *Console* panel or directly in your script file.
 
-:::{.callout-warning}
+::: callout-warning
 The console has no history of what you *knit*, that means that if you are testing a particular code, on a dataset that has not been loaded yet on the *Console* panel, you will have an error message. To keep it safe, if you want to work in an interactive way with the *Console*, run each *chunk* as you progress and *knit* only when you want to look at the whole document.
 :::
 
@@ -183,9 +183,11 @@ When you do not know about the specific options or syntax of a particular comman
 help(mean)
 ```
 
-:::{.callout-note}
+::: callout-::: {.notes}
 The general syntax for a command in `R` is: `command(object, options)`; where `command` is a function available on the current loaded `R` packages or created for the current session.
 :::
+
+
 
 As an alternative, we can use the question mark, without any parenthesis as in:
 
@@ -342,8 +344,8 @@ round(mean(weight, na.rm = TRUE), 1)
 When we have several parentheses, it's easy to get lost on the code. One option is to use a pipe-work flow. Package `magrittr` uses the command `%>%` to pass information in what is known as *pipe-work flow*. In this case, commands are simply read from left to right and top to bottom:
 
 ```{r}
-weight %>%
-  mean(na.rm = TRUE) %>%
+weight |>
+  mean(na.rm = TRUE) |>
   round(1)
 ```
 
@@ -375,7 +377,7 @@ The most common way to work with data sets in `R` are `data.frames`. A data fram
 We can look at all columns but only the first rows of the data:
 
 ```{r}
-uric_down %>% head() 
+uric_down |> head() 
 ```
 
 ### Categorical variables: Factors
@@ -412,13 +414,13 @@ For the conversion to factors, we use the function `mutate` from the `dplyr` pac
 Let's transform `downs` and `sex` from numerical (`double`) to categorical (`factor`) variables:
 
 ```{r}
-uric_down2 = uric_down %>%
+uric_down2 = uric_down |>
   mutate(
     downs = factor(downs, labels = c("No", "Yes")),
     sex = factor(sex, labels = c("Male", "Female"))
   ) 
 
-uric_down2 %>% head()
+uric_down2 |> head()
 ```
 
 ### Labels
@@ -475,7 +477,7 @@ To load the data, we use `read_rds` and assign the file to a new object (in this
 
 ```{r}
 uric_down = read_rds("data/uric_down.rds")
-uric_down %>% head()
+uric_down |> head()
 ```
 
 ## Variables in data frames
@@ -495,8 +497,8 @@ uric_down$sex
 Another option is to **select** the variables (columns) we are interested in:
 
 ```{r}
-uric_down %>%
-  select(sex, downs) %>%
+uric_down |>
+  select(sex, downs) |>
   frq()
 ```
 
@@ -606,7 +608,7 @@ wcgs %>% names()
 Now, we define categorical variables as factors. By default, the value zero is our reference.
 
 ```{r}
-wcgs = wcgs %>%
+wcgs = wcgs |>
   mutate(
     chd = factor(chd, labels = c("No CHD", "CHD")),
     arcus = factor(arcus, labels = c("Absent", "Present")),
@@ -621,7 +623,7 @@ wcgs = wcgs %>%
 One of our variables is a count and stores the number of smoked cigarettes/day. We can define a new variable `Smoker` in which, everyone who smokes one or more cigarette/day will be a smoker. One of the easiest ways to create binary variables is to use a *conditional* statement. For example, the result of `wcgs$ncigs > 0` is a vector with `TRUE` and `FALSE` results.
 
 ```{r}
-wcgs = wcgs %>%
+wcgs = wcgs |>
   mutate(
     smoker = factor(ncigs > 0, labels=c("Non-Smoker", "Smoker"))
   )
@@ -632,7 +634,7 @@ wcgs = wcgs %>%
 We also, prefer units in the metric system. We will convert from inches to centimetres and from pounds to kg.
 
 ```{r}
-wcgs = wcgs %>%
+wcgs = wcgs |>
   mutate(
     height = height * 2.54,
     weight = weight * 0.4536
@@ -650,7 +652,7 @@ levels(wcgs$dib_pat)
 It would make more sense to have `A` as our reference category.
 
 ```{r}
-wcgs = wcgs %>%
+wcgs = wcgs |>
   mutate(dib_pat = relevel(dib_pat, ref = "A"))
 ```
 
@@ -659,7 +661,7 @@ wcgs = wcgs %>%
 It is also helpful to add labels to variables.
 
 ```{r}
-wcgs = wcgs %>%
+wcgs = wcgs |>
   var_labels(
     age =  "Age (years)",
     height = "Height (cm)",
@@ -681,7 +683,7 @@ wcgs = wcgs %>%
 > **Exercise:** Take a *glimpse* of your new data frame and save it as `wcgs.rds` file for further use.
 
 ```{r}
-wcgs %>% glimpse()
+wcgs |> glimpse()
 write_rds(wcgs, "data/wcgs.rds")
 ```
 
@@ -690,20 +692,20 @@ write_rds(wcgs, "data/wcgs.rds")
 Let's said that we are only interested in subjects who are smokers. If that is the case, we can create a new data frame:
 
 ```{r}
-smokers = wcgs %>%
-  filter(smoker == "Smoker") %>%
+smokers = wcgs |>
+  filter(smoker == "Smoker") |>
   copy_labels(wcgs)
 ```
 
-:::{.callout-note}
+::: callout-note
 When we are making comparisons, we use double equals; single equals in `R` are used for assignments and double ones for comparisons. For comparing against a character, we have to use single or double quotes (as shown in code above); numbers are not quoted.
 :::
 
 One way to check that we did not make a terrible mistake, is to check for the number of observations. The number of observations on a data frame is, most of the time, equal to the number of rows (`nrow`):
 
 ```{r}
-wcgs %>% nrow()
-smokers %>% nrow()
+wcgs |> nrow()
+smokers |> nrow()
 ```
 
 The function `nrow` works on *arrays*, i.e., data frames and matrices. For vectors, we use the function `length` instead. For example:
@@ -727,52 +729,52 @@ with(wcgs, length(smoker[smoker == "Smoker"]))
 Using a pipe-workflow:
 
 ```{r}
-wcgs %>% count(smoker)
+wcgs |> count(smoker)
 ```
 
 ```{r}
-wcgs %>% frq(smoker) 
+wcgs |> frq(smoker) 
 ```
 
 ```{r}
-wcgs %>% freq_table(smoker)
+wcgs |> freq_table(smoker)
 ```
 
 Suppose we want to know the number of smokers who weight 100 kg or more:
 
 ```{r}
-wcgs %>%
-  filter(weight >= 100) %>%
+wcgs |>
+  filter(weight >= 100) |>
   count(smoker)
 ```
 
 ```{r}
-smokers %>%
-  filter(weight >= 100) %>%
+smokers |>
+  filter(weight >= 100) |> 
   count()
 ```
 
 For obtaining the same result, but working on the original dataset, we would need to use two conditionals. We use the symbol `&` for **AND** and the symbol `|` for **OR**.
 
 ```{r}
-wcgs %>%
-  filter(weight >= 100 & smoker == "Smoker") %>%
+wcgs |>
+  filter(weight >= 100 & smoker == "Smoker") |>
   count()
 ```
 
 > **Exercise:** Determine the number of smokers who have behavioural pattern `A2` and had either angina or silent myocardial infarction. You will need to write the **OR** conditionals between parenthesis.
 
 ```{r}
-smokers %>%
-  filter(beh_pat == "A2" & (type_chd == "Angina" | type_chd == "Silent MI")) %>%
+smokers |>
+  filter(beh_pat == "A2" & (type_chd == "Angina" | type_chd == "Silent MI")) |>
   count()
 ```
 
 It's possible to answer the exercise using `%in%` which is a variant of the `match` command:
 
 ```{r}
-smokers %>%
-  filter(beh_pat == "A2" & type_chd %in% c("Angina", "Silent MI")) %>%
+smokers |>
+  filter(beh_pat == "A2" & type_chd %in% c("Angina", "Silent MI")) |>
   count()
 ```
 
@@ -796,6 +798,6 @@ wcgs[pos, ]
 ```
 
 ```{r}
-wcgs %>% 
+wcgs |> 
   filter(id == id[pos])
 ```
