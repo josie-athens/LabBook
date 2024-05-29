@@ -15,7 +15,7 @@ book:
     - preface.qmd
     - part: "Fundamentals"
       chapters:
-        - intro.qmd
+        - intro.ipynb
         - descriptives.qmd
         - graphical.qmd
         - estimation.qmd
